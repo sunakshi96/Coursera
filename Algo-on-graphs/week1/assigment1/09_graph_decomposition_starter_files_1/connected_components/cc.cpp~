@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include<malloc.h>
+using std::vector;
+using std::pair;
+using namespace std;
+int vis[100];
+int i;
+void explore(vector <vector<int> > &adj,int i)
+{
+    // currently at i, so indicate that i has been visited
+	vis[i]=1;
+    // loop through nodes adjacent to i
+	for (int x = 0; x < adj[i].size(); x++)
+	{
+        // get the xth element from adjacency list
+        int v = adj[i][x];
+        // check if it has been visited
+    	if(vis[v]==0)
+    	{
+            // if not visited, then explore v
+        	explore(adj,v);
+    	}
+	}
+
+
+}
+
+int number_of_components(vector<vector<int> > &adj) {
+  int res = 0;
+	int count=0;
+  //write your code here
+	int length=adj.size();
+	//vis=(int *)malloc(length*sizeof(int));
+	for(i=0;i<length;i++)
+	{
+	vis[i]=0;
+	}
+	//cout<<"Here"<<endl;
+	count=0;
+	for(i=0;i<length;i++)
+	{
+    	if(vis[i]==0)
+    	{
+    	explore(adj,i);
+    	count++;
+    	}
+
+	}
+
+	res=count;
+
+  return res;
+}
+
+int main()
+{
+  size_t n, m;
+  cin >> n >> m;
+  vector<vector<int> > adj(n, vector<int>());
+  for (size_t i = 0; i < m; i++)
+  {
+    int x, y;
+    cin >> x >> y;
+    adj[x - 1].push_back(y - 1);
+    adj[y - 1].push_back(x - 1);
+  }
+  cout << number_of_components(adj);
+}
